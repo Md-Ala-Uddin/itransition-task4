@@ -108,9 +108,11 @@ export async function registerUser(
                 email,
                 password: hashedPassword,
                 address: address || undefined,
+                status: 'unblocked'
             },
         });
     } catch (error) {
+        console.error('Error creating user: ', error);
         return {
             message: "Registration failed",
             success: false,

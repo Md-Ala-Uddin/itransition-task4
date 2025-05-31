@@ -8,12 +8,12 @@ import { formatDistanceToNow } from "date-fns";
 import { ArrowUpDown } from "lucide-react";
 
 export type User = {
-    id: string;
+    id: string | number;
     name: string;
     email: string;
-    address: string;
-    lastLogin: string;
-    status: "blocked" | "unblocked";
+    address: string | null;
+    last_login: string | null | Date;
+    status: string | null;
 };
 
 const calculateLastLogin = (date: string | null): string => {
@@ -85,9 +85,9 @@ export const columns: ColumnDef<User>[] = [
         },
     },
     {
-        accessorKey: "lastLogin",
+        accessorKey: "last_login",
         header: "Last Seen",
-        cell: ({ row }) => calculateLastLogin(row.getValue("lastLogin")),
+        cell: ({ row }) => calculateLastLogin(row.getValue("last_login")),
     },
     {
         accessorKey: "status",

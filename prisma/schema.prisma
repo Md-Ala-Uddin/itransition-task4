@@ -20,5 +20,6 @@ model user {
   address String?
   email String @unique
   password String
+  status String? @default("unblocked")
   last_login DateTime? @default(now())
 }

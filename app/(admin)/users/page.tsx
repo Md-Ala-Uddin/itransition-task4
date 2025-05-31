@@ -1,25 +1,23 @@
 import DataTable from "@/app/ui/users/data-table";
 import { User, columns } from "@/app/ui/users/columns";
+import prisma from "@/lib/prisma";
 
 async function getUsers(): Promise<User[]> {
-    return [
-        {
-            id: "1",
-            name: "John Doe",
-            email: "john@gmail.com",
-            lastLogin: "2023-10-01T12:00:00Z",
-            status: 'unblocked',
-            address: "123 Main St, Springfield, USA",
-        },
-        {
-            id: "2",
-            name: "Manna Doe",
-            email: "manna@gmail.com",
-            lastLogin: "2023-10-01T12:00:00Z",
-            status: 'blocked',
-            address: "456 Elm St, Springfield, USA",
-        },
-    ];
+    try {
+        return await prisma.user.findMany({
+            select: {
+                id: true,
+                name: true,
+                address: true, 
+                email: true,
+                status: true,
+                last_login: true
+            },
+        })
+    } catch( err ) {
+        console.error('Error fetching users: ', err);
+        return [];
+    }
 }
 
 export default async function Users() {
