@@ -6,24 +6,52 @@ import { z } from "zod";
 import bcrypt from "bcrypt";
 import prisma from "@/lib/prisma";
 
-export async function Authenticate(
-    prevState: string | undefined,
+const LoginFormSchema = z.object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(1, "Password must be at least 1 character"),
+});
+
+export async function login(
+    prevState: FormState | undefined,
     formData: FormData
 ) {
+    const data = Object.fromEntries(formData.entries());
+    const validatedFields = LoginFormSchema.safeParse(data);
+    if (!validatedFields.success) {
+        const fieldErrors = validatedFields.error.flatten().fieldErrors;
+        return {
+            message: "validattion Failed",
+            success: false,
+            errors: fieldErrors,
+        };
+    }
+
     try {
         await signIn("credentials", formData);
     } catch (error) {
         if (error instanceof AuthError) {
+            
             switch (error.type) {
                 case "CredentialsSignin":
-                    return "Invalid credentials";
+                    return {
+                        message: "Invalid Credentials",
+                        success: false,
+                    };
                 default:
-                    return "Something went wrong";
+                    return {
+                        message: "Something went wrong",
+                        success: false,
+                    };
             }
         }
 
         throw error;
     }
+
+    return {
+        message: "Login successful",
+        success: true,
+    };
 }
 
 const RegisterUserSchema = z
