@@ -1,15 +1,81 @@
+"use client";
+
+import { useActionState, startTransition, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
+import { registerUser } from "@/lib/actions";
+import { toast } from "sonner";
+import { Loader2Icon } from "lucide-react";
+import { useDebouncedCallback } from "use-debounce";
+import { useRouter } from "next/navigation";
+import InputField from "@/app/ui/forms/input-field";
+
 export default function RegisterForm() {
+    const router = useRouter();
+    const [state, formAction, isPending] = useActionState(
+        registerUser,
+        undefined
+    );
+
+    useEffect(() => {
+        if (state?.success) {
+            toast.success(`${state?.message} Redirecting to login...`);
+            router.replace("/login");
+        } else if (state?.message) {
+            toast.error(state?.message);
+        }
+    }, [state?.success, state?.message, router]);
+
+    const debouncedFormAction = useDebouncedCallback((formData) => {
+        startTransition(() => {
+            formAction(formData);
+        });
+    }, 300);
+
     return (
-        <form className="w-full flex flex-col gap-4">
-            <Input type="text" name="name" placeholder="Name" />
-            <Input type="text" name="username" placeholder="Username" />
-            <Input type="text" name="email" placeholder="Email" />
-            <Input type="password" name="password" placeholder="Password" />
-            <Input type="password" name="confirm_password" placeholder="Confirm Password" />
-            <Button type="submit">Register</Button>
+        <form
+            action={debouncedFormAction}
+            className="w-full flex flex-col gap-4"
+        >
+            <InputField
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Name"
+                error={state?.errors?.name}
+            />
+            <InputField
+                type="text"
+                name="address"
+                placeholder="Address (optional)"
+                error={state?.errors?.address}
+            />
+            <InputField
+                type="email"
+                name="email"
+                placeholder="Email"
+                error={state?.errors?.email}
+            />
+            <InputField
+                type="password"
+                name="password"
+                placeholder="Password"
+                error={state?.errors?.password}
+            />
+            <InputField
+                type="password"
+                name="confirm_password"
+                placeholder="Confirm Password"
+                error={state?.errors?.confirm_password}
+            />
+            {state?.errors?.form && (
+                <span className="text-destructive text-xs mt-1">
+                    {state.errors.form}
+                </span>
+            )}
+            <Button type="submit" disabled={isPending}>
+                {isPending && <Loader2Icon className="animate-spin" />}
+                Register
+            </Button>
         </form>
     );
 }
