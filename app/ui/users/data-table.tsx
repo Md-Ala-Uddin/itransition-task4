@@ -2,8 +2,10 @@
 import { useState } from "react";
 import {
     ColumnDef,
+    SortingState,
     flexRender,
     getCoreRowModel,
+    getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -25,13 +27,18 @@ export default function DataTable<TData, TValue>({
     data,
 }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = useState({});
+    const [sorting, setSorting] = useState<SortingState>([]);
+
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
         onRowSelectionChange: setRowSelection,
+        onSortingChange: setSorting,
+        getSortedRowModel: getSortedRowModel(),
         state: {
-            rowSelection
+            rowSelection,
+            sorting
         }
     });
 
