@@ -8,9 +8,13 @@ import {
 import Logo from "@/app/ui/logo";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { auth } from "@/auth";
+import LogoutButton from "@/app/ui/forms/logout-button";
 
-export default function Navbar() {
-    const isLoggedIn = false;
+export default async function Navbar() {
+    const session = await auth();
+    const isLoggedIn = !!session?.user;
+
     return (
         <nav className="w-full flex justify-between items-center px-8 md:px-16 py-4 border-b shadow-sm">
             <Link href="/">
@@ -21,14 +25,7 @@ export default function Navbar() {
                 {isLoggedIn ? (
                     <NavigationMenuList>
                         <NavigationMenuItem>
-                            <NavigationMenuLink
-                                asChild
-                                className={navigationMenuTriggerStyle()}
-                            >
-                                <Button asChild variant="outline">
-                                    <Link href="/">Logout</Link>
-                                </Button>
-                            </NavigationMenuLink>
+                                <LogoutButton />
                         </NavigationMenuItem>
                     </NavigationMenuList>
                 ) : (
