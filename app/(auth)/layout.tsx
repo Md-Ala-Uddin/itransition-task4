@@ -1,4 +1,5 @@
-import Logo from '@/app/ui/logo';
+import Logo from "@/app/ui/logo";
+import Link from "next/link";
 export default function AuthLayout({
     children,
 }: {
@@ -12,7 +13,9 @@ export default function AuthLayout({
             {/* left  */}
             <div className="basis-full md:basis-1/2 grow h-full p-8 flex flex-col items-center justify-center">
                 <div className="w-full flex justify-center md:justify-start">
-                    <Logo/>
+                    <Link href="/">
+                        <Logo />
+                    </Link>
                 </div>
                 {children}
             </div>
