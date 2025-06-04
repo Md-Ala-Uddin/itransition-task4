@@ -1,0 +1,34 @@
+{
+    "build": {
+        "dockerfile": "Dockerfile",
+        "target": "dev",
+        "context": ".."
+    },
+    "postCreateCommand": "pnpm install && pnpm prisma generate && pnpm dev",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // Essentials
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "eamodio.gitlens",
+                "bradlc.vscode-tailwindcss",
+                "Prisma.prisma",
+                // AI
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                // Themes
+                "PKief.material-icon-theme",
+                "wesbos.theme-cobalt2"
+            ],
+            "settings": {
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "workbench.colorTheme": "Cobalt2",
+                "workbench.iconTheme": "material-icon-theme",
+                "editor.formatOnSave": true,
+                "prettier.tabWidth": 4
+            }
+        }
+    },
+    "forwardPorts": [3000]
+}
