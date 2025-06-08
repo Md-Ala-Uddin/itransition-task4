@@ -34,6 +34,11 @@ export const { auth, signIn, signOut } = NextAuth({
                     throw new Error("User not found");
                 }
 
+                // Check if user is blocked
+                if (user.status === 'blocked') {
+                    throw new Error("Your account has been blocked. Please contact support.");
+                }
+
                 const isPasswordValid = await bcrypt.compare(
                     password,
                     user.password
@@ -41,6 +46,12 @@ export const { auth, signIn, signOut } = NextAuth({
                 if (!isPasswordValid) {
                     throw new Error("Invalid password");
                 }
+
+                // Update last_login
+                await prisma.user.update({
+                    where: { email },
+                    data: { last_login: new Date() }
+                });
 
                 return {
                     id: user.id.toString(),
