@@ -61,14 +61,17 @@ export default function DataTable<TData extends { id: number }>({
     const unblockUsersWithIds = unblockUsers.bind(null, selectedIds);
     const deleteUsersWithIds = deleteUsers.bind(null, selectedIds);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [blockState, blockAction, blockPending] = useActionState(
         blockUsersWithIds,
         undefined
     );
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [unblockState, unblockAction, unblockPending] = useActionState(
         unblockUsersWithIds,
         undefined
     );
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [deleteState, deleteAction, deletePending] = useActionState(
         deleteUsersWithIds,
         undefined

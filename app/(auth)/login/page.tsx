@@ -1,4 +1,3 @@
-import Image from "next/image";
 import LoginForm from "@/app/ui/forms/login-form";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
@@ -24,7 +23,7 @@ export default function Page() {
                     Forgot password?
                 </Link>
                 <p>
-                    Don't have an account?{" "}
+                    Don&apos;t have an account?{" "}
                     <Link
                         href="/register"
                         className={buttonVariants({

@@ -7,7 +7,7 @@ export default function ForgetPassword() {
                 <header className="w-full mb-8 flex flex-col items-center md:items-start">
                     <h1 className="text-3xl font-bold mb-4">Reset Your Password</h1>
                     <p>
-                        Enter your user account's verified email address and we will send you a password reset link.
+                        Enter your user account&apos;s verified email address and we will send you a password reset link.
                     </p>
                 </header>
                 <ForgetPasswordForm />

@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function Home() {
     return (
         <main className="w-full h-full mb-80 flex flex-col">

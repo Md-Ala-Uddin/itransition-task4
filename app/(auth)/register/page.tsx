@@ -1,4 +1,3 @@
-import Image from "next/image";
 import RegisterForm from "@/app/ui/forms/register-form";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
