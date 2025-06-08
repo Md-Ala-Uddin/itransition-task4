@@ -129,19 +129,16 @@ export async function registerUser(
         success: true,
     };
 }
-export async function blockUsers(ids: string[]) {
+export async function blockUsers(ids: number[]) {
     try {
-        const numericIds = ids
-            .map((id) => Number(id))
-            .filter((id) => !isNaN(id));
         await prisma.user.updateMany({
             where: {
                 id: {
-                    in: numericIds,
+                    in: ids,
                 },
             },
             data: {
-                status: "block",
+                status: "blocked",
             },
         });
     } catch (err) {
@@ -155,15 +152,12 @@ export async function blockUsers(ids: string[]) {
     revalidatePath('/users');
 }
 
-export async function unblockUsers(ids: string[]) {
+export async function unblockUsers(ids: number[]) {
     try {
-        const numericIds = ids
-            .map((id) => Number(id))
-            .filter((id) => !isNaN(id));
         await prisma.user.updateMany({
             where: {
                 id: {
-                    in: numericIds,
+                    in: ids,
                 },
             },
             data: {
@@ -181,15 +175,12 @@ export async function unblockUsers(ids: string[]) {
     revalidatePath('/users');
 }
 
-export async function deleteUsers(ids: string[]) {
+export async function deleteUsers(ids: number[]) {
     try {
-        const numericIds = ids
-            .map((id) => Number(id))
-            .filter((id) => !isNaN(id));
         await prisma.user.deleteMany({
             where: {
                 id: {
-                    in: numericIds,
+                    in: ids,
                 },
             },
         });

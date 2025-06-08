@@ -6,15 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
 import { formatDistanceToNow } from "date-fns";
 import { ArrowUpDown } from "lucide-react";
-
-export type User = {
-    id: string | number;
-    name: string;
-    email: string;
-    address: string | null;
-    last_login: string | null | Date;
-    status: string | null;
-};
+import { User } from '@/lib/definitions';
 
 const calculateLastLogin = (date: string | null): string => {
     if (!date) return "-";

@@ -24,15 +24,15 @@ import { Input } from "@/components/ui/input";
 import { Loader2Icon, LockKeyhole, LockKeyholeOpen, Trash } from "lucide-react";
 import { blockUsers, unblockUsers, deleteUsers } from "@/lib/actions";
 
-interface DataTableProps<TData extends { id: string }, TValue> {
-    columns: ColumnDef<TData, TValue>[];
+interface DataTableProps<TData extends { id: number }> {
+    columns: ColumnDef<TData>[];
     data: TData[];
 }
 
-export default function DataTable<TData extends { id: string }, TValue>({
+export default function DataTable<TData extends { id: number }>({
     columns,
     data,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

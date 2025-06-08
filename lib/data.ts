@@ -1,4 +1,4 @@
-import { User } from "@/app/ui/users/columns";
+import { User } from "@/lib/definitions";
 import prisma from "@/lib/prisma";
 
 export async function getUsers(): Promise<User[]> {
