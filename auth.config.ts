@@ -8,12 +8,17 @@ export const authConfig = {
     callbacks: {
         authorized({ auth, request }: { auth: any; request: { nextUrl: URL } }) {
             const isLoggedIn = !!auth?.user;
-            const isOnDashboard = request.nextUrl.pathname.startsWith("/users");
-            if (isOnDashboard) {
-                if (isLoggedIn) return true;
+            const isOnAdminPanel = request.nextUrl.pathname.startsWith("/users");
+            const isOnAuthPage = request.nextUrl.pathname === "/login" || request.nextUrl.pathname === "/register";
+
+            // Redirect to login if trying to access admin panel without authentication
+            if (isOnAdminPanel && !isLoggedIn) {
                 return false;
-            } else if (isLoggedIn) {
-                return Response.redirect(new URL("/users", request.nextUrl)); 
+            }
+
+            // Redirect to admin panel if logged in user tries to access auth pages
+            if (isOnAuthPage && isLoggedIn) {
+                return Response.redirect(new URL("/users", request.nextUrl));
             }
 
             return true;
