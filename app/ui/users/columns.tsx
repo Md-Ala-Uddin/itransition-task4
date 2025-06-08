@@ -6,14 +6,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
 import { formatDistanceToNow } from "date-fns";
 import { ArrowUpDown } from "lucide-react";
-import { User } from '@/lib/definitions';
+import { UserData } from '@/lib/definitions';
 
 const calculateLastLogin = (date: string | null): string => {
     if (!date) return "-";
     return formatDistanceToNow(new Date(date), { addSuffix: true });
 };
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<UserData>[] = [
     {
         id: "select",
         header: ({ table }) => (

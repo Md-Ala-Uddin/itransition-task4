@@ -1,7 +1,7 @@
-import { User } from "@/lib/definitions";
+import { UserData } from "@/lib/definitions";
 import prisma from "@/lib/prisma";
 
-export async function getUsers(): Promise<User[]> {
+export async function getUsers(): Promise<UserData[]> {
     try {
         return await prisma.user.findMany({
             select: {

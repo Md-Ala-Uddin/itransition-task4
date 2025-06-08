@@ -1,8 +1,8 @@
-export type User = {
-    id: number;
-    name: string;
-    email: string;
-    address: string | null;
-    last_login: string | null | Date;
-    status: string | null;
-};
+import type { user } from '@/generated/prisma'
+
+export type User = user;
+export type UserData = Omit<User, "password">;
+export type CreateUser = Pick<
+    User,
+    "name" | "email" | "password" | "address" | "last_login" | "status"
+>;

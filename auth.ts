@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
 import Credentials from "next-auth/providers/credentials";
-import type { User } from "./lib/definitions.ts";
 import prisma from "./lib/prisma";
 import { z } from "zod";
 import bcrypt from "bcrypt";
