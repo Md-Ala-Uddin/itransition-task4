@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { startTransition, useActionState, useState } from "react";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -21,14 +21,15 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LockKeyhole, LockKeyholeOpen, Trash } from "lucide-react";
+import { Loader2Icon, LockKeyhole, LockKeyholeOpen, Trash } from "lucide-react";
+import { blockUsers, unblockUsers, deleteUsers } from "@/lib/actions";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends { id: string }, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
 }
 
-export default function DataTable<TData, TValue>({
+export default function DataTable<TData extends { id: string }, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
@@ -52,18 +53,60 @@ export default function DataTable<TData, TValue>({
         },
     });
 
+    const selectedIds = table
+        .getSelectedRowModel()
+        .rows.map((row) => row.original.id);
+        
+    const blockUsersWithIds = blockUsers.bind(null, selectedIds);
+    const unblockUsersWithIds = unblockUsers.bind(null, selectedIds);
+    const deleteUsersWithIds = deleteUsers.bind(null, selectedIds);
+
+    const [blockState, blockAction, blockPending] = useActionState(
+        blockUsersWithIds,
+        undefined
+    );
+    const [unblockState, unblockAction, unblockPending] = useActionState(
+        unblockUsersWithIds,
+        undefined
+    );
+    const [deleteState, deleteAction, deletePending] = useActionState(
+        deleteUsersWithIds,
+        undefined
+    );
+
     return (
         <div className="min-w-max flex flex-col">
             {/* Table Heading */}
             <div className="w-full mb-2 flex justify-between">
                 <div className="flex gap-1">
-                    <Button variant="outline" size="sm">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => startTransition(blockAction)}
+                    >
+                        {blockPending && (
+                            <Loader2Icon className="animate-spin" />
+                        )}
                         <LockKeyhole /> Block
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => startTransition(unblockAction)}
+                    >
+                        {unblockPending && (
+                            <Loader2Icon className="animate-spin" />
+                        )}
                         <LockKeyholeOpen />
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => startTransition(deleteAction)}
+                    >
+                        {deletePending && (
+                            <Loader2Icon className="animate-spin" />
+                        )}
                         <Trash />
                     </Button>
                 </div>

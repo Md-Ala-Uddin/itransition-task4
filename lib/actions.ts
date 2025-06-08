@@ -5,6 +5,7 @@ import { AuthError } from "next-auth";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 const LoginFormSchema = z.object({
     email: z.string().email("Invalid email address"),
@@ -30,7 +31,6 @@ export async function login(
         await signIn("credentials", formData);
     } catch (error) {
         if (error instanceof AuthError) {
-            
             switch (error.type) {
                 case "CredentialsSignin":
                     return {
@@ -108,11 +108,11 @@ export async function registerUser(
                 email,
                 password: hashedPassword,
                 address: address || undefined,
-                status: 'unblocked'
+                status: "unblocked",
             },
         });
     } catch (error) {
-        console.error('Error creating user: ', error);
+        console.error("Error creating user: ", error);
         return {
             message: "Registration failed",
             success: false,
@@ -128,4 +128,78 @@ export async function registerUser(
         message: "Registration successful",
         success: true,
     };
+}
+export async function blockUsers(ids: string[]) {
+    try {
+        const numericIds = ids
+            .map((id) => Number(id))
+            .filter((id) => !isNaN(id));
+        await prisma.user.updateMany({
+            where: {
+                id: {
+                    in: numericIds,
+                },
+            },
+            data: {
+                status: "block",
+            },
+        });
+    } catch (err) {
+        console.log(err);
+        if (err instanceof Error) {
+            return err.message;
+        }
+        return "An unknown error occurred.";
+    }
+
+    revalidatePath('/users');
+}
+
+export async function unblockUsers(ids: string[]) {
+    try {
+        const numericIds = ids
+            .map((id) => Number(id))
+            .filter((id) => !isNaN(id));
+        await prisma.user.updateMany({
+            where: {
+                id: {
+                    in: numericIds,
+                },
+            },
+            data: {
+                status: "unblocked",
+            },
+        });
+    } catch (err) {
+        console.log(err);
+        if (err instanceof Error) {
+            return err.message;
+        }
+        return "An unknown error occurred.";
+    }
+
+    revalidatePath('/users');
+}
+
+export async function deleteUsers(ids: string[]) {
+    try {
+        const numericIds = ids
+            .map((id) => Number(id))
+            .filter((id) => !isNaN(id));
+        await prisma.user.deleteMany({
+            where: {
+                id: {
+                    in: numericIds,
+                },
+            },
+        });
+    } catch (err) {
+        console.log(err);
+        if (err instanceof Error) {
+            return err.message;
+        }
+        return "An unknown error occurred.";
+    }
+
+    revalidatePath('/users');
 }
