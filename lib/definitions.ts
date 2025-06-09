@@ -1,4 +1,4 @@
-import type { user } from '@/generated/prisma'
+import type { user } from '@prisma/client'
 
 export type User = user;
 export type UserData = Omit<User, "password">;
