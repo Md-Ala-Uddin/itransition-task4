@@ -1,5 +1,5 @@
-import DataTable from "@/app/ui/users/data-table";
-import { columns } from "@/app/ui/users/columns";
+import DataTable from "@/components/users/data-table";
+import { columns } from "@/components/users/columns";
 import { getUsers } from "@/lib/data";
 import { UserData } from '@/lib/definitions'
 

@@ -1,4 +1,4 @@
-import ResetPasswordForm from "@/app/ui/forms/reset-password-form";
+import ResetPasswordForm from "@/components/forms/reset-password-form";
 
 export default function ResetPassword() {
     return (

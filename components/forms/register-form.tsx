@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter } from "next/navigation";
-import InputField from "@/app/ui/forms/input-field";
+import InputField from "@/components/forms/input-field";
 
 export default function RegisterForm() {
     const router = useRouter();

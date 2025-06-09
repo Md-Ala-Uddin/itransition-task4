@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import InputField from "@/app/ui/forms/input-field";
+import InputField from "@/components/forms/input-field";
 import { useActionState, startTransition, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter } from "next/navigation";
