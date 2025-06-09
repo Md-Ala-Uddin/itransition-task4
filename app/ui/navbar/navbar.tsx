@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/auth";
 import LogoutButton from "@/app/ui/forms/logout-button";
+import UserAvatar from "@/app/ui/navbar/user-avatar";
 
 export default async function Navbar() {
     const session = await auth();
@@ -22,10 +23,13 @@ export default async function Navbar() {
             </Link>
 
             <NavigationMenu>
-                {isLoggedIn ? (
+                {isLoggedIn && session.user ? (
                     <NavigationMenuList>
                         <NavigationMenuItem>
                             <LogoutButton />
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <UserAvatar user={session.user} />
                         </NavigationMenuItem>
                     </NavigationMenuList>
                 ) : (
